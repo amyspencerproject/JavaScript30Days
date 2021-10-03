@@ -11,7 +11,8 @@
       <div class="clock-face">
         <div class="hand hour-hand"></div>
         <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
+        <div class="hand second-hand">
+        </div>
       </div>
     </div>
 
@@ -62,12 +63,29 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%; /* moves pivot point to outer right edge (100% of x-axis) */
+      transform: rotate(90deg); /* makes starting position 12 */
+      transition: all 0.05s; /*smooth transtion of hand positions */
+      transition-timing-function: cubic-bezier(0.48, 1.57, 0.58, 1);
     }
 
   </style>
 
   <script>
+  const secondHand = document.querySelector('.second-hand');
 
+    function setDate() {
+      const now = new Date();
+
+      const seconds = now.getSeconds();
+      const secondsDegrees = ((seconds / 60) *360) + 90;
+      secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+      console.log(seconds);
+    }
+
+    setInterval(setDate, 1000); /* in ms so 1000 is 1 sec */
+
+    setDate();
 
   </script>
 </body>
