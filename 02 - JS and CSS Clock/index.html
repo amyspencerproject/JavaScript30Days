@@ -18,7 +18,7 @@
 
   <style>
     html {
-      background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
+      background: #018DED url(https://unsplash.it/1500/1000?image=119&blur=1.5);
       background-size: cover;
       font-family: 'helvetica neue';
       text-align: center;
@@ -68,12 +68,26 @@
       transition-timing-function: cubic-bezier(0.48, 1.57, 0.58, 1);
     }
 
+    .hour-hand {
+      background: black;
+      height: 6px;
+      width: 30%;
+      position: absolute;
+      top: 50%;
+      right: 50%;
+    }
+
+    .second-hand {
+      height: 3px;
+    }
+
   </style>
 
   <script>
   const secondHand = document.querySelector('.second-hand');
   const minuteHand = document.querySelector('.min-hand');
   const hourHand = document.querySelector('.hour-hand');
+  const hand = document.querySelector('.hand');
 
     function setDate() {
       const now = new Date();
@@ -81,14 +95,23 @@
       const seconds = now.getSeconds();
       const secondsDegrees = ((seconds / 60) *360) + 90;
       secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+      if (secondsDegrees === 90) {
+        hand.style.transition = 'none';
+      };
 
       const minutes = now.getMinutes();
-      const minutesDegrees = ((minutes / 60) * 360) + ((seconds / 60) *360) + 90;
+      const minutesDegrees = ((minutes / 60) * 360) + 90;
       minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+      if (minutesDegrees === 90) {
+        hand.style.transition = 'none';
+      };
 
       const hours = now.getHours();
-      const hoursDegree = ((hours/12) * 360) + ((minutes / 60) * 360) + 90;
+      const hoursDegree = ((hours/12) * 360) + 90;
       hourHand.style.transform = `rotate(${hoursDegree}deg)`;
+      if (hoursDegree === 90) {
+        hand.style.transition = 'none';
+      };
     }
 
     setInterval(setDate, 1000); /* in ms so 1000 is 1 sec */
