@@ -19,24 +19,32 @@
     <input id="base" type="color" name="base" value="#ffc600">
   </div>
 
-  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+  <div class="image-container">
+    <figure>
+      <img class = "img"/>
+    </figure>
+    <h4>Image by: <span class="author"></span></h4>
+    <button>Show a new image</button>
+  </div>
 
   <style>
     :root {
       --base: #ffc600;
       --spacing: 10px;
-      --blur: 10px;
+      --blur: 0px;
     }
 
     img {
       padding: var(--spacing);
       background: var(--base);
       filter: blur(var(--blur));
+      width: 75%;
     }
 
     .highlight {
       color: var(--base);
     }
+
 
     /*
       misc styles, nothing to do with CSS variables
@@ -51,8 +59,24 @@
       font-size: 50px;
     }
 
+    button {
+      margin: 1.5em auto;
+      padding: 20px;
+      font-size: 20px;
+    }
+
     .controls {
       margin-bottom: 50px;
+    }
+
+    figure {
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-container {
+      font-size: 20px;
     }
 
     input {
@@ -62,6 +86,9 @@
 
   <script>
     const inputs = document.querySelectorAll('.controls input'); /* this is a node (not an array) must used for each() to loop */
+    const img = document.querySelector('.img');
+    const button =document.querySelector('button');
+    const authorSpan = document.querySelector('.author')
 
     function handleUpdate(){
       const suffix = this.dataset.sizing || '';
@@ -70,6 +97,34 @@
 
     inputs.forEach(input => input.addEventListener("change", handleUpdate));
     inputs.forEach(input => input.addEventListener("mousemove", handleUpdate));
+
+    const getImage = async function () {
+      const res = await fetch("https://picsum.photos/v2/list?limit=100");
+      const image = await res.json();
+      selectRandomImage(image);
+    };
+
+    
+
+    const selectRandomImage = function (image) {
+      const randomIndex = Math.floor (Math.random() *image.length);
+      const randomImage = image[randomIndex]; 
+      displayImage(randomImage);
+    };
+
+    const displayImage = function(randomImage) {
+      const author = randomImage.author;
+      const imageAddress = randomImage.download_url;
+      authorSpan.innerText = author;
+      img.src = imageAddress;
+      console.log(imageAddress);
+    };
+    
+
+    button.addEventListener('click', function() {
+      getImage();
+    });
+    
   </script>
 
 </body>
