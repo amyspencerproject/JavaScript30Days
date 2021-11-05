@@ -28,41 +28,49 @@
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = JSON.parse(localStorage.getItem('items')) || [];
+  const items = JSON.parse(localStorage.getItem('items')) || []; 
+  //get items in local storage already submitted by user or get empty array
+  //JSON.parse() to turn string in local storage into objects
 
-  function addItem(e) {
-    e.preventDefault();
-    const text = (this.querySelector('[name=item]')).value;
+  function addItem (e) {
+    e.preventDefault(); //By default a form will reload the page after a submit event
+    const text = (this.querySelector('[name = item]')).value;
     const item = {
       text,
       done: false
     };
 
     items.push(item);
-    populateList(items, itemsList);
+    populateList(items, itemsList); //items and itemsList are equiv to plates, platesList
     localStorage.setItem('items', JSON.stringify(items));
     this.reset();
   }
 
-  function populateList(plates = [], platesList) {
+  function populateList (plates = [], platesList) { //function not tied directly to other const, makes it more versatile in future
     platesList.innerHTML = plates.map((plate, i) => {
       return `
-        <li>
-          <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''} />
-          <label for="item${i}">${plate.text}</label>
-        </li>
+      <li>
+        <input type="checkbox" data-index=${i} id=item${i} ${plate.done ? 'checked' : ''} />
+        <label for="item${i}">${plate.text}</label>
+      </li>
       `;
-    }).join('');
-  }
+    }).join(''); //join() makes array from map() into a string
 
-  function toggleDone(e) {
-    if (!e.target.matches('input')) return; // skip this unless it's an input
-    const el = e.target;
-    const index = el.dataset.index;
+  };
+
+  function toggleDone (e) {
+    if (!e.target.matches('input')) //skip this unless it is an input
+    return;
+    const element = e.target;
+    const index = element.dataset.index;
     items[index].done = !items[index].done;
+
     localStorage.setItem('items', JSON.stringify(items));
-    populateList(items, itemsList);
-  }
+    populateList(items, itemsList); //items and itemsList are equiv to plates, platesList
+  };
+
+  //the populateList function recreates the list from scratch each time. this could be bad for performance if there was high-thru-put or animation
+
 
   addItems.addEventListener('submit', addItem);
   itemsList.addEventListener('click', toggleDone);
