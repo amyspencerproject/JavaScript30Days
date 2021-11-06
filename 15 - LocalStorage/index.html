@@ -23,6 +23,7 @@
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
     </form>
+    <button>Clear Menu</button>
   </div>
 
 <script>
@@ -31,6 +32,8 @@
   const items = JSON.parse(localStorage.getItem('items')) || []; 
   //get items in local storage already submitted by user or get empty array
   //JSON.parse() to turn string in local storage into objects
+  const clearButton = document.querySelector('button');
+
 
   function addItem (e) {
     e.preventDefault(); //By default a form will reload the page after a submit event
@@ -76,6 +79,16 @@
   itemsList.addEventListener('click', toggleDone);
 
   populateList(items, itemsList);
+
+  clearButton.addEventListener('click', clearMenu);
+
+  function clearMenu () {
+    localStorage.clear();
+    item = [];
+    itemsList.innerHTML='';
+    plates = [];
+  };
+
 
 </script>
 
