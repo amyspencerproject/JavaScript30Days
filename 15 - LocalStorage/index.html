@@ -82,11 +82,10 @@
 
   clearButton.addEventListener('click', clearMenu);
 
+
   function clearMenu () {
     localStorage.clear();
-    item = [];
-    itemsList.innerHTML='';
-    plates = [];
+    location.reload(true);
   };
 
 
