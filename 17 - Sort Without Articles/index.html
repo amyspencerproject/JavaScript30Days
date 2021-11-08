@@ -48,6 +48,28 @@
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
+function strip(bandName) {
+  return bandName.replace((/^(a |an |the )/i), '').trim();
+};
+//strip() will remove the a, an, or the
+
+const sortedBands = bands.sort(function (a, b) {
+  return strip(a) > strip(b) ? 1 : -1;
+});
+
+/*** Same function as the ternary function above ***/
+// const sortedBands = bands.sort(function (a, b) {  
+// if (strip(a) > strip(b)) { //use strip on the string being sorted not on the original array thus preserving the full band name
+  //   return 1;
+  // } else {
+  //   return -1;
+  // }
+// });
+
+document.querySelector('#bands').innerHTML = 
+  sortedBands
+  .map(band => `<li>${band}</li>`)
+  .join(''); //gets rid of the commas in the array
 
 </script>
 
