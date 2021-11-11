@@ -184,23 +184,28 @@
 <script>
 
   const timeNodes = Array.from(document.querySelectorAll('[data-time]'));
+  //timeNodes is a node list so you first must convert to an array to use map()
+  //wrapping in Array.from is cleaner that doing a forEach()
 
   const seconds = timeNodes
     .map(node => node.dataset.time)
     .map(timeCode => {
       const [mins, secs] = timeCode.split(':').map(parseFloat);
+      //the split makes an array of strings 
+      //.map(parseFloat) turns array of strings into an array of numbers
       return (mins * 60) + secs;
     })
-    .reduce((total, vidSeconds) => total + vidSeconds);
+
+    .reduce((total, videoSeconds) => total + videoSeconds);
 
     let secondsLeft = seconds;
-    const hours = Math.floor(secondsLeft / 3600);
-    secondsLeft = secondsLeft % 3600;
+    const hours = Math.floor(secondsLeft/3600); //Math.floor returns whole number
+    secondsLeft = seconds % 3600; //mod or % returns the remainder after seconds is divided by 3600
 
-    const mins = Math.floor(secondsLeft / 60);
-    secondsLeft = secondsLeft % 60;
+    const minutes = Math.floor(secondsLeft/60);
+    secondsLeft = minutes % 60;
+    console.log(hours, minutes, secondsLeft);
 
-    console.log(hours, mins, secondsLeft);
 
 </script>
 </body>
