@@ -3,3 +3,35 @@ const canvas = document.querySelector('.photo');
 const ctx = canvas.getContext('2d');
 const strip = document.querySelector('.strip');
 const snap = document.querySelector('.snap');
+
+function getVideo () {
+    navigator.mediaDevices.getUserMedia({video: true, audio: false})
+    .then(localMediaStream => {
+        console.log(localMediaStream);
+        video.srcObject = localMediaStream;
+        // video.src = window.URL.createObjectURL(localMediaStream); *This is an outdated method*
+        video.play();
+    })
+
+    .catch(err => {
+        console.error('Oh No!', err);
+    });
+};
+
+function paintToCanvas () { //grabs a still shot of the video every 16 ms and put in canvas space
+    const width = video.videoWidth;
+    const height = video.videoHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    return setInterval(() => {
+        ctx.drawImage(video, 0,0, width, height);
+    }, 16);
+};
+
+function takePhoto () {
+    snap.currentTime = 0;
+    snap.play();
+};
+
+getVideo();
