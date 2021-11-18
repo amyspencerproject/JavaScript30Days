@@ -20,8 +20,21 @@
   words.appendChild(p);
 
   recognition.addEventListener('result', e => {
-    console.log(e);
+    const transcript = Array.from(e.results)
+    .map(result => result[0]) //there will be several snippets of transcribed text
+    .map(result => result.transcript)
+    .join('') // Join the arrays together
+
+    p.textContent = transcript; //sends transcript to the paragraph elements of DOM
+    if (e.results[0].isFinal) {
+      p = document.createElement('p'); //stops the over writting of previous text
+      words.appendChild(p); //adds new text to new paragraph element
+    }
+
+    console.log(transcript);
   });
+
+  recognition.addEventListener('end', recognition.start); //do not run recognition.start just supply the name of this function
 
   recognition.start();
 
