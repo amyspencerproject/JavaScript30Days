@@ -59,6 +59,18 @@
     /*Compass: https://thenounproject.com/search/?q=compass&i=592352*/
   </style>
   <script>
+
+    const arrow = document.querySelector('.arrow');
+    const speed = document.querySelector('.speed-value')
+
+    navigator.geolocation.watchPosition((data) => {
+      speed.textContent = data.coords.speed;
+      arrow.style.transform = `rotate(${data.coords.heading}deg)`; //rotate by degrees relative to North, called heading
+    }, err{
+      console.error(err);
+      alert('Hey, you gotta allow location acces to get this to work!');
+    });
+    
   </script>
 </body>
 </html>
